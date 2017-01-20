@@ -11,7 +11,7 @@
 #define MAX_SEQSIZE 4096
 #define s(x,y) blosum_mat[x][y]
 
-enum {DIAGONAL, UP, DOWN};
+enum {DIAGONAL, UP, LEFT};
 
 struct sequence {
     size_t length;
@@ -88,10 +88,14 @@ struct alignment * needleman_wunsch(int32_t d, // gap_penalty
     Z_free = allocate_2darray(&Z, n, m);
 
     // initialize borders
-    for (uint32_t i = 1; i < n; ++i)
+    for (uint32_t i = 1; i < n; ++i) {
         F[i][0] = F[i - 1][0] - d;
-    for (uint32_t j = 1; j < m; ++j)
+        Z[i][0] = UP;
+    }
+    for (uint32_t j = 1; j < m; ++j){
         F[0][j] = F[0][j - 1] - d;
+        Z[0][j] = LEFT;
+    }
 
     // fill the 2d matrix and prepare backtracking
     for (unsigned i = 1; i < n; ++i) {
@@ -103,7 +107,7 @@ struct alignment * needleman_wunsch(int32_t d, // gap_penalty
             if (max == f1)
                 Z[i][j] = DIAGONAL;
             else if (max == f2)
-                Z[i][j] = DOWN; // has to be swaped
+                Z[i][j] = LEFT; // has to be swaped
             else
                 Z[i][j] = UP;
         }
@@ -113,8 +117,8 @@ struct alignment * needleman_wunsch(int32_t d, // gap_penalty
     char r1[n + m];
     char r2[n + m];
     unsigned index = 0;
-    unsigned i = n - 1, j = m - 1;
-    while (i + j != 0) {
+    int32_t i = n - 1, j = m - 1;
+    while (i >= 0 && j >= 0) {
         if (Z[i][j] == DIAGONAL) {
             r1[index] = s1.sequence[i];
             r2[index] = s2.sequence[j];

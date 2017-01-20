@@ -1,3 +1,3 @@
 
 build:
-	clang alignment.c -o alignment.o
+	clang -g -Wall alignment.c -o alignment.o

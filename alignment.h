@@ -25,14 +25,60 @@ struct sequence {
     char seq_name[32];
 };
 
+char blosum_mat[HIGHEST_CHAR][HIGHEST_CHAR];
+extern const unsigned char amino_acids[];
+
 struct alignment {
     size_t length;
     int32_t score;
-    char first[MAX_SEQSIZE * 2];
-    char second[MAX_SEQSIZE * 2];
+    char upper[MAX_SEQSIZE * 2];
+    char lower[MAX_SEQSIZE * 2];
 };
 
-char blosum_mat[HIGHEST_CHAR][HIGHEST_CHAR];
-extern const unsigned char nuclids[];
+/**
+ * This function implements the Needleman-Wunsch algorithm as suggested in
+ * Durbin et. al. -- Biological sequence analysis.
+ *
+ * @param a  The address of an empty struct alignment
+ *           where the solution will be written to
+ * @param d  The chosen gap penalty
+ * @param s1 A pointer to a struct sequence that contains a sequence
+ * @param s2 A pointer to a struct sequence that contains a sequence
+ */
+void needleman_wunsch(struct alignment * a,
+                      int32_t d, // gap_penalty
+                      const struct sequence * s1,
+                      const struct sequence * s2);
+
+/**
+ * This function implements the Smith-Waterman algorithm as suggested in
+ * Durbin et. al. -- Biological sequence analysis.
+ *
+ * @param a  The address of an empty struct alignment
+ *           where the solution will be written to
+ * @param d  The chosen gap penalty
+ * @param s1 A pointer to a struct sequence that contains a sequence
+ * @param s2 A pointer to a struct sequence that contains a sequence
+ */
+void smith_waterman(struct alignment * a,
+                    int32_t d, // gap_penalty
+                    const struct sequence * s1,
+                    const struct sequence * s2);
+
+/**
+ * Fills the BLOSUM matrix that is defined above.
+ *
+ * @param filename A path to a file that contains a BLOSUM matrix as letter
+ *                 tuples with an asociated score value.
+ */
+void fill_blosum(char * filename);
+
+/**
+ * Reading a sequence from a fasta file.
+ * @param file_pos A vaild FILE pointer that points to the position of
+ *                 a line in a fasta file beginning with > NAME
+ * @param s        The struct sequence to fill with data.
+ */
+void read_sequence(FILE * file_pos, struct sequence * s);
 
 #endif // ALIGNMENT_H

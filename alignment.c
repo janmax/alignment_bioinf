@@ -10,8 +10,8 @@ static void strrev(char *p)
     while (q && *q) ++q;
     for (--q; p < q; ++p, --q)
         *p = *p ^ *q,
-         *q = *p ^ *q,
-          *p = *p ^ *q;
+        *q = *p ^ *q,
+        *p = *p ^ *q;
 }
 
 static int32_t * allocate_2darray(int32_t ***arr, int32_t n, int32_t m)

@@ -43,14 +43,15 @@ How is the code organized?
 
 The structure is the following:
 
-- **``alignment.h``** declares and documents the logic for the implemented
+- **alignment.h** declares and documents the logic for the implemented
 algorithms.
 
-- **``print_functions.h``** just declares some helper functions that print out
+- **print_functions.h** just declares some helper functions that print out
 some structs nicely. Very helpful for debugging as well.
 
-- **``main.c``** glues everything together, reads data and passes it to the
+- **main.c** glues everything together, reads data and passes it to the
 algorithms, which therefore could be reused in another project easily.
 
 Static functions are usually not commented, since they just encapsulate behavior
 that would distract from the relevant code parts.
+

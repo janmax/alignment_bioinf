@@ -1,5 +1,5 @@
 ****************************************************************
-Implementation of Needleman-Wnusch and Smith-Waterman algorithms
+Implementation of Needleman-Wunsch and Smith-Waterman algorithms
 ****************************************************************
 
 Created by Jan Maximilian Michal as part of the lecture Algortithmen der
